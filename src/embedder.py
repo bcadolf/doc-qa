@@ -34,8 +34,14 @@ def store_chunks(chunks: list[str], doc_name: str):
 
 def clear_collection(name: str = "documents"):
     """Clear all data from a collection"""
-    chroma_client.delete_collection(name=name)
+    chroma_client.delete_collection(source=name)
     console.print(f"[yellow]Cleared collection '{name}'[/yellow]")
+
+def clear_document(doc_name: str):
+    """Clear all chunks from a document"""
+    collection = get_or_create_collection()
+    collection.delete(where={"source": doc_name})
+    console.print(f"[yellow]Cleared document '{doc_name}' from collection '{collection.name}'[/yellow]")
 
 def clear_all():
     """Clear all collections in the database"""

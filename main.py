@@ -4,7 +4,7 @@ from rich.console import Console
 from rich.prompt import Prompt
 from src.server import start_server, stop_server
 from src.ingestor import load_document, chunk_text
-from src.embedder import store_chunks, clear_collection, clear_all
+from src.embedder import store_chunks, clear_collection, clear_all, clear_document
 from src.retriever import retrieve
 from src.qa import answer_question
 
@@ -42,8 +42,9 @@ def main():
         while True:
             question = Prompt.ask("[bold]Ask a question[/bold] or choose an option: \n"
             "[green]1.[/green] Clear all data\n"
-            "[green]2.[/green] Clear documents collection\n"
-            "[green]3.[/green] Exit\n"
+            "[green]2.[/green] Clear collection\n"
+            "[green]3.[/green] Clear document\n"
+            "[green]4.[/green] Exit\n"
             "Your input: ")
 
             if question == "1":
@@ -51,8 +52,12 @@ def main():
 
             elif question == "2":
                 clear_collection()
+            
+            elif question == "3":
+                doc_name = Prompt.ask("Enter the document name to clear (e.g. 'mydoc.txt'):")
+                clear_document(doc_name)
 
-            elif question.lower() == "exit" or question == "3":
+            elif question.lower() == "exit" or question == "4":
                 break
 
             chunks = retrieve(question)
